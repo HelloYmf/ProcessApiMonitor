@@ -3,9 +3,15 @@
 #### 开发环境：
 Win10  VisualStudio 2019  多字节集编码  x86
 #### 介绍：
-支持根据遍历得到的32位进程列表，选择要监控的进程，再提供对应的dll，使用隐藏模块注入的方式注入目标进程，可根据目标进程的导入表进行IAT HOOK，从而达到监控的目的，监控结果放到文件中保存。
-还可以根据目标进程的函数地址进行自定义监控，这里用到了Inline HOOK的技术，监控到的信息通过MessageBox显示。
+选择进程后，隐藏模块注入DLL，控制端利用命名管道与注入的DLL进行通信，使用IAT HOOK监控导入表中存在的API的调用情况。对于导入表中不存在的函数，可以手动输入函数地址进行Inline HOOK，实现自定义监控。还可以对被注入进程中的函数进行远程调用。
 
 #### 演示：
 
-![avatar](https://i.loli.net/2021/05/12/wZWh3Uzv8ASrKfC.png)
+##### 隐藏模块注入：
+![进程监控-注入成功](https://i.loli.net/2021/05/12/wZWh3Uzv8ASrKfC.png)
+##### IAT HOOK实现监控：
+![进程监控-IAT HOOK实现监控](https://i.loli.net/2021/05/12/mobCtQJjdOZSuFH.png)
+##### Inline HOOK实现自定义监控：
+![进程监控-Inline HOOK实现自定义监控](https://i.loli.net/2021/05/12/bFvoxDAXRUeHyg9.png)
+##### 远程调用：
+![进程监控-远程调用](https://i.loli.net/2021/05/12/jrepETW3qzK4Mn7.png)
