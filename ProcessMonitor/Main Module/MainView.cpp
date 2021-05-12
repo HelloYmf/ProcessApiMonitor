@@ -1,25 +1,25 @@
 #include <Windows.h>
-#include "resource.h"
+#include "../View Module/resource.h"
 #include "../PE Module/PeTools.h"
 #include "../Proc Module/Process.h"
 #include "../Api Module/ApiFunc.h"
 using namespace std;
 
-HWND g_hDlg = 0;						//Ö÷¶Ô»°¿ò¾ä±ú
-DWORD g_dwRowId = 0;					//Ñ¡ÖĞµÄº¯Êı
-HINSTANCE g_hAppInstance;				//Ö÷´°¿Ú¾ä±ú
-TCHAR* g_pModuleName = NULL;			//Ä£¿éÃû
-TCHAR g_szProcName[0x80] = { 0 };		//±»Ñ¡ÖĞ½ø³ÌÃû
-DWORD g_dwChosedProcPid = 0;			//±»Ñ¡ÖĞ½ø³ÌPID
-DWORD g_dwChosedProcAddr = 0;			//±»Ñ¡ÖĞ½ø³Ì»ùÖ·
-DWORD g_dwChosedProcSize = 0;			//±»Ñ¡ÖĞ½ø³ÌÄ£¿é´óĞ¡
-TCHAR g_szChosedFunName[0x80] = { 0 };	//±»Ñ¡ÖĞº¯ÊıÃû×Ö
-TCHAR g_szChosedFunState[0x80] = { 0 };	//±»Ñ¡ÖĞº¯Êı×´Ì¬
-TCHAR g_szChosedFunDLL[0x80] = { 0 };	//±»Ñ¡ÖĞº¯ÊıËùÊôDLL
-HANDLE hPipe = NULL;					//ÃüÃû¹ÜµÀ
-TCHAR g_szCustomAddr[256] = { 0 };		//×Ô¶¨Òå¼à¿ØÎ»ÖÃ
+HWND g_hDlg = 0;						//ä¸»å¯¹è¯æ¡†å¥æŸ„
+DWORD g_dwRowId = 0;					//é€‰ä¸­çš„å‡½æ•°
+HINSTANCE g_hAppInstance;				//ä¸»çª—å£å¥æŸ„
+TCHAR* g_pModuleName = NULL;			//æ¨¡å—å
+TCHAR g_szProcName[0x80] = { 0 };		//è¢«é€‰ä¸­è¿›ç¨‹å
+DWORD g_dwChosedProcPid = 0;			//è¢«é€‰ä¸­è¿›ç¨‹PID
+DWORD g_dwChosedProcAddr = 0;			//è¢«é€‰ä¸­è¿›ç¨‹åŸºå€
+DWORD g_dwChosedProcSize = 0;			//è¢«é€‰ä¸­è¿›ç¨‹æ¨¡å—å¤§å°
+TCHAR g_szChosedFunName[0x80] = { 0 };	//è¢«é€‰ä¸­å‡½æ•°åå­—
+TCHAR g_szChosedFunState[0x80] = { 0 };	//è¢«é€‰ä¸­å‡½æ•°çŠ¶æ€
+TCHAR g_szChosedFunDLL[0x80] = { 0 };	//è¢«é€‰ä¸­å‡½æ•°æ‰€å±DLL
+HANDLE hPipe = NULL;					//å‘½åç®¡é“
+TCHAR g_szCustomAddr[256] = { 0 };		//è‡ªå®šä¹‰ç›‘æ§ä½ç½®
 
-//Ïß³Ìº¯Êı-µÈ´ı¿Í»§¶ËÁ¬½Ó
+//çº¿ç¨‹å‡½æ•°-ç­‰å¾…å®¢æˆ·ç«¯è¿æ¥
 DWORD WINAPI WaitClientConnect(
 	LPVOID lpParameter   // thread data		
 )
@@ -29,12 +29,12 @@ DWORD WINAPI WaitClientConnect(
 	return 0;
 }
 
-//Ö÷½çÃæ»Øµ÷º¯Êı
+//ä¸»ç•Œé¢å›è°ƒå‡½æ•°
 BOOL CALLBACK DialogMainProc(
-	HWND hwndDlg,  // ´°¿Ú¾ä±ú			
-	UINT uMsg,     // ÏûÏ¢			
-	WPARAM wParam, // ÏûÏ¢²ÎÊı1			
-	LPARAM lParam  // ÏûÏ¢²ÎÊı2			
+	HWND hwndDlg,  // çª—å£å¥æŸ„			
+	UINT uMsg,     // æ¶ˆæ¯			
+	WPARAM wParam, // æ¶ˆæ¯å‚æ•°1			
+	LPARAM lParam  // æ¶ˆæ¯å‚æ•°2			
 )
 {
 	switch (uMsg)
@@ -42,10 +42,10 @@ BOOL CALLBACK DialogMainProc(
 		case WM_INITDIALOG:
 		{
 			g_hDlg = hwndDlg;
-			//³õÊ¼»¯±íÍ·
+			//åˆå§‹åŒ–è¡¨å¤´
 			InitProcessListHeader(hwndDlg);
 			InitFunctionListHeader(hwndDlg);
-			//±éÀú½ø³Ì
+			//éå†è¿›ç¨‹
 			EnumProcess(hwndDlg);
 
 			return TRUE;
@@ -56,22 +56,22 @@ BOOL CALLBACK DialogMainProc(
 			{
 				case IDC_BUTTON_REFRESH:
 				{
-					//ÖØĞÂ±éÀú½ø³Ì
+					//é‡æ–°éå†è¿›ç¨‹
 					EnumProcess(hwndDlg);
 					return TRUE;
 				}
 				case IDC_BUTTON_CHOOSEFILE:
 				{
-					//Ñ¡ÔñÎÄ¼ş
+					//é€‰æ‹©æ–‡ä»¶
 					g_pModuleName = GetFileName(hwndDlg);
-					//Ìî³ä±à¼­¿ò
+					//å¡«å……ç¼–è¾‘æ¡†
 					SendDlgItemMessage(hwndDlg, IDC_EDIT_DLLPATH, WM_SETTEXT, 0, (DWORD)g_pModuleName);
 
 					return TRUE;
 				}
 				case IDC_BUTTON_FUNCTIONOK:
 				{
-					//´Ó±à¼­¿òÖĞ»ñÈ¡ÒªHOOKµÄµØÖ·
+					//ä»ç¼–è¾‘æ¡†ä¸­è·å–è¦HOOKçš„åœ°å€
 					GetDlgItemText(hwndDlg, IDC_EDIT_IMPORTFUNCTION, g_szCustomAddr, 256);
 
 					return TRUE;
@@ -80,18 +80,18 @@ BOOL CALLBACK DialogMainProc(
 				{
 					if (InjectModule(g_pModuleName))
 					{
-						MessageBox(hwndDlg,"Ä£¿é×¢Èë³É¹¦£¡","³É¹¦",MB_OK);
+						MessageBox(hwndDlg,"æ¨¡å—æ³¨å…¥æˆåŠŸï¼","æˆåŠŸ",MB_OK);
 					}
 					else
 					{
-						MessageBox(hwndDlg, "Ä£¿é×¢ÈëÊ§°Ü£¡", "´íÎó", MB_OK);
+						MessageBox(hwndDlg, "æ¨¡å—æ³¨å…¥å¤±è´¥ï¼", "é”™è¯¯", MB_OK);
 						return FALSE;
 					}
-					//´´½¨Ïß³Ì£¬µÈ´ıÃüÃûĞÅµÀÁ¬½Ó
+					//åˆ›å»ºçº¿ç¨‹ï¼Œç­‰å¾…å‘½åä¿¡é“è¿æ¥
 					HANDLE hWaitThread = ::CreateThread(NULL, 0, WaitClientConnect, 0, 0, NULL);
 					if (!hWaitThread)
 					{
-						MessageBox(hwndDlg, "´´½¨Ïß³ÌÊ§°Ü£¡", "´íÎó", MB_OK);
+						MessageBox(hwndDlg, "åˆ›å»ºçº¿ç¨‹å¤±è´¥ï¼", "é”™è¯¯", MB_OK);
 					}
 
 					return TRUE;
@@ -100,7 +100,7 @@ BOOL CALLBACK DialogMainProc(
 				{
 					char szBtnText[20] = { 0 };
 					GetDlgItemText(hwndDlg, IDC_BUTTON_STARTMONITOR, szBtnText, 20);
-					if (strcmp(szBtnText, "Í£Ö¹¼à¿Ø") == 0)
+					if (strcmp(szBtnText, "åœæ­¢ç›‘æ§") == 0)
 					{
 						SendShell(1);
 					}
@@ -120,7 +120,7 @@ BOOL CALLBACK DialogMainProc(
 				{
 					TCHAR szBtnText[20] = { 0 };
 					GetDlgItemText(hwndDlg, IDC_BUTTON_INLINEHOOKSTART, szBtnText, 20);
-					if (strcmp(szBtnText, "Í£Ö¹×Ô¶¨Òå¼à¿Ø") == 0)
+					if (strcmp(szBtnText, "åœæ­¢è‡ªå®šä¹‰ç›‘æ§") == 0)
 					{
 						SendShell(3);
 					}
@@ -135,53 +135,53 @@ BOOL CALLBACK DialogMainProc(
 		case WM_NOTIFY:
 		{
 			NMHDR* pNMHDR = (NMHDR*)lParam;
-			//µ¥»÷½ø³ÌÁĞ±í
+			//å•å‡»è¿›ç¨‹åˆ—è¡¨
 			if (wParam == IDC_LIST_PROCESS && pNMHDR->code == NM_CLICK)
 			{
-				//»ñÈ¡Ñ¡ÖĞ½ø³ÌĞÅÏ¢
+				//è·å–é€‰ä¸­è¿›ç¨‹ä¿¡æ¯
 				GetChosProcInfo(hwndDlg);
-				//±éÀúº¯ÊıÁĞ±í
+				//éå†å‡½æ•°åˆ—è¡¨
 				EnumFunctions(hwndDlg);
 			}
-			//µ¥»÷º¯ÊıÁĞ±í
+			//å•å‡»å‡½æ•°åˆ—è¡¨
 			if (wParam == IDC_LIST_FUNCTION && pNMHDR->code == NM_CLICK)
 			{
-				HWND hListFunction;					//FunctionList¾ä±ú
-				//»ñÈ¡¾ä±ú
+				HWND hListFunction;					//FunctionListå¥æŸ„
+				//è·å–å¥æŸ„
 				hListFunction = GetDlgItem(hwndDlg, IDC_LIST_FUNCTION);
-				//»ñÈ¡Ñ¡ÖĞĞĞ
+				//è·å–é€‰ä¸­è¡Œ
 				GetRow(hListFunction);
 
 				TCHAR szTempBuffer[256] = { 0 };
-				LV_ITEM vitem;								//ListµÄÊı¾İÏî
+				LV_ITEM vitem;								//Listçš„æ•°æ®é¡¹
 				memset(&vitem, 0, sizeof(LV_ITEM));
-				vitem.iSubItem = 2;							//ÒªÌáÈ¡µÄÁĞ
-				vitem.pszText = szTempBuffer;				//Ö¸¶¨´æ´¢²éÑ¯½á¹ûµÄ»º³åÇø
-				vitem.cchTextMax = 0x80;					//ÒªÌáÈ¡µÄ³ß´ç
+				vitem.iSubItem = 2;							//è¦æå–çš„åˆ—
+				vitem.pszText = szTempBuffer;				//æŒ‡å®šå­˜å‚¨æŸ¥è¯¢ç»“æœçš„ç¼“å†²åŒº
+				vitem.cchTextMax = 0x80;					//è¦æå–çš„å°ºå¯¸
 				SendMessage(hListFunction, LVM_GETITEMTEXT, g_dwRowId, (DWORD)&vitem);
 
-				if (strcmp(szTempBuffer, "¼à¿ØÖĞ") == 0)
+				if (strcmp(szTempBuffer, "ç›‘æ§ä¸­") == 0)
 				{
-					SetDlgItemText(hwndDlg, IDC_BUTTON_STARTMONITOR, "Í£Ö¹¼à¿Ø");
+					SetDlgItemText(hwndDlg, IDC_BUTTON_STARTMONITOR, "åœæ­¢ç›‘æ§");
 					//g_dwRowId = -1;
 				}
 				else
 				{
-					SetDlgItemText(hwndDlg, IDC_BUTTON_STARTMONITOR, "¼à¿ØAPI");
+					SetDlgItemText(hwndDlg, IDC_BUTTON_STARTMONITOR, "ç›‘æ§API");
 				}
 			}
-			//Ë«»÷½ø³ÌÁĞ±í
+			//åŒå‡»è¿›ç¨‹åˆ—è¡¨
 			if (wParam == IDC_LIST_PROCESS && pNMHDR->code == NM_DBLCLK)
 			{
-				//Ìî³äÑ¡ÖĞ½ø³Ì±à¼­¿ò£¬»ñÈ¡½ø³Ì»ùÖ·
+				//å¡«å……é€‰ä¸­è¿›ç¨‹ç¼–è¾‘æ¡†ï¼Œè·å–è¿›ç¨‹åŸºå€
 				FillChooseProcess(hwndDlg);
 			}
-			//Ë«»÷º¯ÊıÁĞ±í
+			//åŒå‡»å‡½æ•°åˆ—è¡¨
 			if (wParam == IDC_LIST_FUNCTION && pNMHDR->code == NM_DBLCLK)
 			{
-				//»ñÈ¡Ñ¡ÖĞº¯ÊıĞÅÏ¢
+				//è·å–é€‰ä¸­å‡½æ•°ä¿¡æ¯
 				GetChosFunInfo(hwndDlg);
-				MessageBox(hwndDlg, g_szChosedFunName, "[Ñ¡ÖĞº¯Êı]", MB_OK);
+				MessageBox(hwndDlg, g_szChosedFunName, "[é€‰ä¸­å‡½æ•°]", MB_OK);
 			}
 			return TRUE;
 		}
@@ -194,7 +194,7 @@ BOOL CALLBACK DialogMainProc(
 	return FALSE;
 }
 
-//Ö÷º¯Êı
+//ä¸»å‡½æ•°
 int CALLBACK WinMain(
 	_In_  HINSTANCE hInstance,
 	_In_  HINSTANCE hPrevInstance,
@@ -202,16 +202,16 @@ int CALLBACK WinMain(
 	_In_  int nCmdShow
 )
 {
-	//´´½¨ÃüÃû¹ÜµÀ
+	//åˆ›å»ºå‘½åç®¡é“
 	CreatePipe(hPipe);
 
-	//¼ÓÔØÖ÷½çÃæDialog
+	//åŠ è½½ä¸»ç•Œé¢Dialog
 	DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG_MAIN), NULL, DialogMainProc);
 
-	//´òÓ¡´íÎó´úÂë
+	//æ‰“å°é”™è¯¯ä»£ç 
 	DWORD errorCode = GetLastError();
 
-	//¹Ø±ÕÃüÃû¹ÜµÀ
+	//å…³é—­å‘½åç®¡é“
 	ClosePipe(hPipe);
 	return 0;
 }
