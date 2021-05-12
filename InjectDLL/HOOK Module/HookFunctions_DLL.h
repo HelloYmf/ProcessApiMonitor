@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 
-#include "../File/Cfile_DLL.h"
+#include "../File Module/Cfile_DLL.h"
 
 int WINAPI myMessageBoxA(
 	HWND   hWnd,
@@ -20,15 +20,15 @@ HANDLE WINAPI myCreateFileA(
 	HANDLE                hTemplateFile
 );
 
-//…Ë÷√IAT HOOK
+//√â√®√ñ√ÉIAT HOOK
 BOOL SetIATHook(DWORD oldFunAddr, DWORD newFunAddr);
 
-//–∂‘ÿIAT HOOK
+//√ê¬∂√î√òIAT HOOK
 BOOL UnSetIATHook(DWORD oldFunAddr, DWORD newFunAddr);
 
-//…Ë÷√Inline HOOK
+//√â√®√ñ√ÉInline HOOK
 BOOL SetInlineHOOK(DWORD dwHookAddr, DWORD dwHookLen);
 
-//–∂‘ÿInline HOOK
+//√ê¬∂√î√òInline HOOK
 BOOL UnSetInlineHOOK();
 
