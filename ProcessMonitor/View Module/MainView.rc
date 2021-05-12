@@ -1,0 +1,123 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(简体，中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_MAIN DIALOGEX 0, 0, 550, 289
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "[Process Monitor 32Bit]"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "",IDC_STATIC,7,7,536,275
+    CONTROL         "",IDC_LIST_PROCESS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,14,17,239,232
+    GROUPBOX        "模块注入",IDC_STATIC,259,18,276,92
+    GROUPBOX        "功能菜单",IDC_STATIC,259,235,277,38
+    EDITTEXT        IDC_EDIT_DLLPATH,323,42,190,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "选择模块",IDC_BUTTON_CHOOSEFILE,315,86,54,14
+    PUSHBUTTON      "注入进程",IDC_BUTTON_INJECT,429,86,54,14
+    PUSHBUTTON      "监控API",IDC_BUTTON_STARTMONITOR,284,249,60,14
+    PUSHBUTTON      "远程调用",IDC_BUTTON_REMOTECALL,454,249,60,14
+    PUSHBUTTON      "刷新",IDC_BUTTON_REFRESH,93,259,63,13
+    GROUPBOX        "",IDC_STATIC,258,116,277,114
+    CONTROL         "",IDC_LIST_FUNCTION,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,258,117,277,84
+    LTEXT           "监控函数地址：",IDC_STATIC,283,211,65,12
+    EDITTEXT        IDC_EDIT_IMPORTFUNCTION,347,210,114,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "确认",IDC_BUTTON_FUNCTIONOK,471,210,39,11
+    EDITTEXT        IDC_EDIT_CHOOSEPROCESS,323,63,190,12,ES_AUTOHSCROLL
+    LTEXT           "选中模块：",IDC_STATIC,271,44,50,11
+    LTEXT           "选中进程：",IDC_STATIC,271,64,50,11
+    PUSHBUTTON      "监控自定义地址",IDC_BUTTON_INLINEHOOKSTART,364,249,69,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG_MAIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 543
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 282
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_MAIN AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // 中文(简体，中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
