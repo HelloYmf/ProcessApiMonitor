@@ -8,4 +8,4 @@ Win10  VisualStudio 2019  多字节集编码  x86
 
 #### 演示：
 
-![avatar](https://sm.ms/image/wZWh3Uzv8ASrKfC)
+![avatar](https://i.loli.net/2021/05/12/wZWh3Uzv8ASrKfC.png)
