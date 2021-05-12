@@ -1,8 +1,8 @@
 ﻿// dllmain.cpp : 定义 DLL 应用程序的入口点。
 #include <Windows.h>
-#include "../TestInjectDLL/Proc/Process_DLL.h"
-#include "../TestInjectDLL/HOOK/HookFunctions_DLL.h"
 #include <stdio.h>
+#include "../InjectDLL/Proc Module/Process_DLL.h"
+#include "../InjectDLL/HOOK Module/HookFunctions_DLL.h"
 
 typedef int(WINAPI* PFNMESSAGEBOXA)(HWND, LPCSTR, LPCSTR, UINT);
 
